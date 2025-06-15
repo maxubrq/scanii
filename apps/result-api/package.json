@@ -1,0 +1,22 @@
+{
+  "name": "@scanii/result-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "dev": "tsc --watch",
+    "build": "tsc",
+    "format": "prettier --write ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "typescript": "^5.8.3"
+  },
+  "devDependencies": {
+    "@scanii/prettier-config": "workspace:*",
+    "@scanii/typescript-config": "workspace:*",
+    "prettier": "^3.5.3"
+  }
+}
