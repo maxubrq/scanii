@@ -39,3 +39,6 @@ yarn-error.log*
 
 # Redis
 redis-data
+
+# Minio
+minio-data
