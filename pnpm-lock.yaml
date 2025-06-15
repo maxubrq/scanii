@@ -51,12 +51,18 @@ importers:
       eslint:
         specifier: ^9.28.0
         version: 9.28.0
+      prettier:
+        specifier: ^3.5.3
+        version: 3.5.3
       typescript:
         specifier: 5.8.2
         version: 5.8.2
 
   apps/web:
     dependencies:
+      '@scanii/math':
+        specifier: workspace:*
+        version: link:../../packages/math
       '@scanii/ui':
         specifier: workspace:*
         version: link:../../packages/ui
@@ -88,6 +94,9 @@ importers:
       eslint:
         specifier: ^9.28.0
         version: 9.28.0
+      prettier:
+        specifier: ^3.5.3
+        version: 3.5.3
       typescript:
         specifier: 5.8.2
         version: 5.8.2
@@ -121,6 +130,9 @@ importers:
       globals:
         specifier: ^16.2.0
         version: 16.2.0
+      prettier:
+        specifier: ^3.5.3
+        version: 3.5.3
       typescript:
         specifier: ^5.8.2
         version: 5.8.2
@@ -136,8 +148,16 @@ importers:
       typescript:
         specifier: 5.8.3
         version: 5.8.3
+    devDependencies:
+      prettier:
+        specifier: ^3.5.3
+        version: 3.5.3
 
-  packages/typescript-config: {}
+  packages/typescript-config:
+    devDependencies:
+      prettier:
+        specifier: ^3.5.3
+        version: 3.5.3
 
   packages/ui:
     dependencies:
@@ -169,6 +189,9 @@ importers:
       eslint:
         specifier: ^9.28.0
         version: 9.28.0
+      prettier:
+        specifier: ^3.5.3
+        version: 3.5.3
       typescript:
         specifier: 5.8.2
         version: 5.8.2

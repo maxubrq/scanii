@@ -3,7 +3,13 @@
   "version": "0.0.0",
   "private": true,
   "license": "MIT",
+  "scripts": {
+    "format": "prettier --write ."
+  },
   "publishConfig": {
     "access": "public"
+  },
+  "devDependencies": {
+    "prettier": "^3.5.3"
   }
 }

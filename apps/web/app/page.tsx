@@ -1,6 +1,7 @@
 import Image, { type ImageProps } from "next/image";
 import { Button } from "@scanii/ui/button";
 import styles from "./page.module.css";
+import { add } from "@scanii/math/add";
 
 type Props = Omit<ImageProps, "src"> & {
   srcLight: string;
@@ -19,6 +20,8 @@ const ThemeImage = (props: Props) => {
 };
 
 export default function Home() {
+  const result = add(1, 2);
+
   return (
     <div className={styles.page}>
       <main className={styles.main}>
@@ -31,6 +34,7 @@ export default function Home() {
           height={38}
           priority
         />
+        <p>Result: {result}</p>
         <ol>
           <li>
             Get started by editing <code>apps/web/app/page.tsx</code>
