@@ -9,7 +9,8 @@
     "format": "prettier --write .",
     "test": "vitest",
     "test:watch": "vitest --watch",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "build:ncc": "pnpm run build && ncc build dist/app.js -o distncc"
   },
   "keywords": [],
   "author": "",
