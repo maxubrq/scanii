@@ -61,5 +61,15 @@ services:
       - MINIO_ACCESS_KEY=minioadmin
       - MINIO_SECRET_KEY=minioadmin
     command: minio server /data --console-address ":9001"
+  rabbitmq:
+    image: rabbitmq:latest
+    ports:
+      - 5672:5672
+    volumes:
+      - ../rabbitmq-data:/var/lib/rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=admin
+    command: rabbitmq-server
 
 

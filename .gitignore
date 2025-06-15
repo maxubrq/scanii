@@ -42,3 +42,6 @@ redis-data
 
 # Minio
 minio-data
+
+# RabbitMQ
+rabbitmq-data
