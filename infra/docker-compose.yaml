@@ -15,8 +15,7 @@ services:
     working_dir: /app
     command: npm run dev
     depends_on:
-      - result-api
-      - upload-api
+      - rabbitmq
   result-api:
     image: scanii/result-api
     build:
@@ -31,7 +30,7 @@ services:
     working_dir: /app
     command: npm run dev
     depends_on:
-      - upload-api
+      - rabbitmq
   upload-api:
     image: scanii/upload-api
     build:
@@ -45,6 +44,9 @@ services:
       - ../apps/upload-api:/app
     working_dir: /app
     command: npm run dev
+    depends_on:
+      - rabbitmq
+      - minio
   redis:
     image: redis:latest
     ports:
