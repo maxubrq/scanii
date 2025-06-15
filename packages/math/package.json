@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "@scanii/typescript-config": "workspace:*",
+    "@scanii/prettier-config": "workspace:*",
     "typescript": "5.8.3"
   },
   "devDependencies": {

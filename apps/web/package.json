@@ -20,6 +20,7 @@
   },
   "devDependencies": {
     "@scanii/eslint-config": "workspace:*",
+    "@scanii/prettier-config": "workspace:*",
     "@scanii/typescript-config": "workspace:*",
     "@types/node": "^22.15.3",
     "@types/react": "19.1.0",

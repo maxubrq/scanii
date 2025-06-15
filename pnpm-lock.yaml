@@ -36,6 +36,9 @@ importers:
       '@scanii/eslint-config':
         specifier: workspace:*
         version: link:../../packages/eslint-config
+      '@scanii/prettier-config':
+        specifier: workspace:*
+        version: link:../../packages/prettier-config
       '@scanii/typescript-config':
         specifier: workspace:*
         version: link:../../packages/typescript-config
@@ -79,6 +82,9 @@ importers:
       '@scanii/eslint-config':
         specifier: workspace:*
         version: link:../../packages/eslint-config
+      '@scanii/prettier-config':
+        specifier: workspace:*
+        version: link:../../packages/prettier-config
       '@scanii/typescript-config':
         specifier: workspace:*
         version: link:../../packages/typescript-config
@@ -142,6 +148,9 @@ importers:
 
   packages/math:
     dependencies:
+      '@scanii/prettier-config':
+        specifier: workspace:*
+        version: link:../prettier-config
       '@scanii/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
@@ -152,6 +161,8 @@ importers:
       prettier:
         specifier: ^3.5.3
         version: 3.5.3
+
+  packages/prettier-config: {}
 
   packages/typescript-config:
     devDependencies:
@@ -171,6 +182,9 @@ importers:
       '@scanii/eslint-config':
         specifier: workspace:*
         version: link:../eslint-config
+      '@scanii/prettier-config':
+        specifier: workspace:*
+        version: link:../prettier-config
       '@scanii/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config

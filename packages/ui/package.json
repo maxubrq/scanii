@@ -8,9 +8,11 @@
   "scripts": {
     "lint": "eslint . --max-warnings 0",
     "generate:component": "turbo gen react-component",
-    "check-types": "tsc --noEmit"
+    "check-types": "tsc --noEmit",
+    "format": "prettier --write ."
   },
   "devDependencies": {
+    "@scanii/prettier-config": "workspace:*",
     "@scanii/eslint-config": "workspace:*",
     "@scanii/typescript-config": "workspace:*",
     "@turbo/gen": "^2.5.0",

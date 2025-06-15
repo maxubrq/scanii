@@ -18,6 +18,7 @@
     "react-dom": "^19.1.0"
   },
   "devDependencies": {
+    "@scanii/prettier-config": "workspace:*",
     "@scanii/eslint-config": "workspace:*",
     "@scanii/typescript-config": "workspace:*",
     "@types/node": "^22.15.3",
