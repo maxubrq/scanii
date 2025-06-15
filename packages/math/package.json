@@ -1,0 +1,27 @@
+{
+  "name": "@scanii/math",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsc --watch",
+    "build": "tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "exports": {
+    "./add": {
+      "types": "./src/add.ts",
+      "default": "./src/add.ts"
+    },
+    "./substract": {
+      "types": "./src/substract.ts",
+      "default": "./src/substract.ts"
+    }
+  },
+  "dependencies": {
+    "@scanii/typescript-config": "workspace:*",
+    "typescript": "5.8.3"
+  }
+}
