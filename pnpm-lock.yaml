@@ -66,6 +66,22 @@ importers:
         specifier: ^3.5.3
         version: 3.5.3
 
+  packages/domain:
+    dependencies:
+      typescript:
+        specifier: ^5.8.3
+        version: 5.8.3
+    devDependencies:
+      '@scanii/prettier-config':
+        specifier: workspace:*
+        version: link:../prettier-config
+      '@scanii/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+      prettier:
+        specifier: ^3.5.3
+        version: 3.5.3
+
   packages/eslint-config:
     devDependencies:
       '@eslint/js':
