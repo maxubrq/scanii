@@ -6,7 +6,10 @@
   "scripts": {
     "dev": "tsc --watch",
     "build": "tsc",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "test": "vitest",
+    "test:watch": "vitest --watch",
+    "test:coverage": "vitest run --coverage"
   },
   "keywords": [],
   "author": "",
@@ -17,6 +20,7 @@
   "devDependencies": {
     "@scanii/prettier-config": "workspace:*",
     "@scanii/typescript-config": "workspace:*",
-    "prettier": "^3.5.3"
+    "prettier": "^3.5.3",
+    "vitest": "^3.2.3"
   }
 }

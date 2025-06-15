@@ -19,6 +19,27 @@
     "dev": {
       "cache": false,
       "persistent": true
+    },
+    "test": {
+      "dependsOn": ["^test"]
+    },
+    "test:watch": {
+      "dependsOn": ["^test:watch"]
+    },
+    "test:coverage": {
+      "dependsOn": ["^test:coverage"]
+    },
+    "test:upload-api": {
+      "dependsOn": ["^test:upload-api"]
+    },
+    "test:scan-worker": {
+      "dependsOn": ["^test:scan-worker"]
+    },
+    "test:result-api": {
+      "dependsOn": ["^test:result-api"]
+    },
+    "test:domain": {
+      "dependsOn": ["^test:domain"]
     }
   }
 }

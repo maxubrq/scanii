@@ -1,84 +1,133 @@
-# Turborepo starter
+# 🔬 Scanii
 
-This Turborepo starter is maintained by the Turborepo core team.
+> **Tiny, open‑source malware‑scanning pipeline (mini‑VirusTotal) built with Node.js + TypeScript, RabbitMQ, Redis and Postgres.**
 
-## Using this example
+[![CI](https://github.com/your‑handle/scanii/actions/workflows/ci.yml/badge.svg)](…)
+[![Docker Pulls](https://img.shields.io/docker/pulls/scanii/worker)](…)
+[![License](https://img.shields.io/github/license/your‑handle/scanii)](LICENSE)
 
-Run the following command:
+---
 
-```sh
-npx create-turbo@latest
+## ✨ Why Scanii?
+
+* **Practice‑ready OSS** – mono‑repo + `docker‑compose`, up in < 5 min.
+* **Async pipeline** – upload once, scan in the background, poll or subscribe.
+* **Lightweight engines** – ships with **ClamAV** & **YARA**; easy to add more.
+* **Cache‑first** – SHA‑256 verdicts kept 24 h in Redis to avoid duplicate scans.
+* **Observability by default** – Prometheus metrics & Grafana dashboards.
+* **MIT‑licensed** – fork, extend, embed, no strings attached.
+
+---
+
+## 🏗️ Architecture (MVP)
+
+```text
+┌──────────────┐   POST /upload   ┌──────────────────┐
+│  Upload API  │ ───────────────► │  MinIO  (S3)     │
+└─────┬────────┘                 └────────┬─────────┘
+      │  scan job (id, sha256)            │
+      ▼                                   ▼
+┌──────────────┐        RabbitMQ        ┌────────────────┐
+│ Result API & │◄────────────────────── │  Scan Worker   │
+│ Dashboard    │   status / events      │  pool (ClamAV) │
+└──────────────┘                         └────────────────┘
+       ▲
+       │   Redis (24 h verdict cache)
+       │
+       ▼
+  PostgreSQL (metadata, audit, billing)
 ```
 
-## What's inside?
+---
 
-This Turborepo includes the following packages/apps:
+## 🚀 Quick Start
 
-### Apps and Packages
+> **Prerequisites:** Docker Desktop ≥ 24 or compatible Linux Docker Engine.
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@scanii/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@scanii/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@scanii/typescript-config`: `tsconfig.json`s used throughout the monorepo
+```bash
+# 1. Clone & launch
+$ git clone https://github.com/your-handle/scanii.git
+$ cd scanii
+$ make dev        # or: docker compose up -d --build
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+# 2. Upload a sample
+$ curl -F "file=@tests/eicar.com" http://localhost:4000/upload
+{"scan_id":"e2d1...","status":"queued"}
 
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm build
+# 3. Poll result
+$ curl http://localhost:4002/scan/e2d1...
+{"verdict":"malicious","engines":{"ClamAV":"EICAR-Test-Signature"}}
 ```
 
-### Develop
+Login to Grafana at `http://localhost:3000` (admin / admin) to view queue depth, API latency, cache hit‑rate.
 
-To develop all apps and packages, run the following command:
+---
 
-```
-cd my-turborepo
-pnpm dev
-```
+## ⚙️ Configuration
 
-### Remote Caching
+| ENV            | Default                | Description                         |
+| -------------- | ---------------------- | ----------------------------------- |
+| `SCAN_WORKERS` | `2`                    | # of parallel scan containers       |
+| `REDIS_URL`    | `redis://redis:6379`   | Redis connection string             |
+| `RABBIT_URL`   | `amqp://rabbitmq:5672` | RabbitMQ host                       |
+| `S3_ENDPOINT`  | `http://minio:9000`    | MinIO/S3 endpoint                   |
+| `S3_BUCKET`    | `scanii-samples`       | Bucket for uploaded files           |
+| `MAX_FILE_MB`  | `100`                  | Reject files larger than this value |
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
+All variables can be overridden via `.env` or the Compose override file.
 
-Turborepo can use a technique known as [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+---
 
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
+## 📚 API (v1)
 
-```
-cd my-turborepo
-npx turbo login
-```
+### `POST /upload`
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+Upload a file (multipart‑form). Returns `scan_id`.
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
+### `GET /scan/{scan_id}`
 
-```
-npx turbo link
-```
+Fetch scan result JSON. Returns `202 Accepted` if still in queue, or `200` with verdict when finished.
 
-## Useful Links
+### `WS /ws/scan/{scan_id}` *(optional)*
 
-Learn more about the power of Turborepo:
+WebSocket endpoint that pushes `scan.progress` & `scan.done` events.
 
-- [Tasks](https://turborepo.com/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.com/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.com/docs/reference/configuration)
-- [CLI Usage](https://turborepo.com/docs/reference/command-line-reference)
+See full Swagger/OpenAPI spec at `http://localhost:4000/docs` once the stack is running.
+
+---
+
+## 🛣️ Roadmap
+
+* [ ] **CLI** (`npx scanii scan file.exe`)
+* [ ] **Webhook callbacks** for async notification
+* [ ] **Cuckoo Sandbox plugin** (optional heavy mode)
+* [ ] Multi‑engine adapter (vendor cloud AV)
+* [ ] Edge upload proxy + rate‑limit per IP
+
+Track progress in [`docs/ROADMAP.md`](docs/ROADMAP.md).
+
+---
+
+## 🤝 Contributing
+
+1. Fork → Branch → PR. Follow Conventional Commits.
+2. `npm run test` must pass (unit + integration).
+3. Docs live in `docs/` (Markdown); kept in sync with code.
+
+Good first issues are labelled **`good‑first‑issue`**.
+
+---
+
+## 🔒 Security & Responsible Disclosure
+
+Scanning malware is risky. Workers run **unprivileged** with seccomp, read‑only rootfs and limited CPU/IO. If you discover a security issue, please email ***[security@scanii.dev](mailto:security@scanii.dev)*** instead of opening a public issue.
+
+---
+
+## 📜 License
+
+Scanii is released under the **MIT License** – see [`LICENSE`](LICENSE) for details.
+
+---
+
+> Built with ❤️ & ☕ by contributors around the world – star the repo if Scanii helps you learn!
