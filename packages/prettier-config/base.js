@@ -4,17 +4,9 @@ const base = {
   useTabs: false,
   semi: true,
   singleQuote: true,
-  trailingComma: "es5",
+  trailingComma: "all",
   bracketSpacing: true,
   bracketSameLine: false,
-  arrowParens: "always",
-  endOfLine: "lf",
-  quoteProps: "as-needed",
-  jsxSingleQuote: false,
-  jsxBracketSameLine: false,
-  embeddedLanguageFormatting: "auto",
-  singleAttributePerLine: false,
-  proseWrap: "preserve",
 };
 
 export default base;
