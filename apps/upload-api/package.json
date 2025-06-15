@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "dev": "tsc --watch",
+    "dev": "tsx watch src/app.ts",
     "build": "tsc",
     "format": "prettier --write .",
     "test": "vitest",
@@ -16,12 +16,15 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@hono/node-server": "^1.14.4",
+    "hono": "^4.7.11",
     "typescript": "^5.8.3"
   },
   "devDependencies": {
     "@scanii/prettier-config": "workspace:*",
     "@scanii/typescript-config": "workspace:*",
     "prettier": "^3.5.3",
+    "tsx": "^4.20.3",
     "vitest": "^3.2.3"
   }
 }
