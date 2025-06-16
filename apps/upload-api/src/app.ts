@@ -1,25 +1,27 @@
-import { Hono } from 'hono';
-import { serve } from '@hono/node-server';
+import { serve } from "@hono/node-server";
+import { Hono } from "hono";
 
 declare global {
   var process: {
     env: {
-      PORT: string;
+      UPLOAD_API_PORT: string;
     };
   };
 }
 
-const app = new Hono();
-const port = Number(process.env.PORT ?? 3000);
+function bootstrap() {
+  const app = new Hono();
+  const port = Number(process.env.UPLOAD_API_PORT ?? 3000);
 
-app.get('/', (c) => c.text('Hello World'));
+  app.get('/', (c) => c.text('Hello World'));
 
-serve(
-  {
-    fetch: app.fetch,
-    port,
-  },
-  (info) => {
-    console.log(`Server is running on ${info.address}:${info.port}`);
-  },
-);
+  serve(
+    {
+      fetch: app.fetch,
+      port,
+    },
+    (info) => {
+      console.log(`Server is running on ${info.address}:${info.port}`);
+    },
+  );
+}

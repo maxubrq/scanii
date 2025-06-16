@@ -40,6 +40,7 @@ services:
       - 3002:3002
     environment:
       - NODE_ENV=development
+      - UPLOAD_API_PORT=3002
     volumes:
       - ../apps/upload-api:/app
     working_dir: /app

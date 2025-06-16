@@ -18,6 +18,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "short-uuid": "^5.2.0",
     "typescript": "^5.8.3"
   },
   "devDependencies": {
