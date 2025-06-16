@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "tsc --watch",
-    "build": "tsc",
+    "build": "tsc && tsc-alias",
     "format": "prettier --write .",
     "test": "vitest",
     "test:watch": "vitest --watch",
@@ -25,6 +25,7 @@
     "@scanii/prettier-config": "workspace:*",
     "@scanii/typescript-config": "workspace:*",
     "prettier": "^3.5.3",
+    "tsc-alias": "^1.8.16",
     "vitest": "^3.2.3"
   }
 }

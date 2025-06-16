@@ -1,5 +1,6 @@
 import { serve } from "@hono/node-server";
 import { Hono } from "hono";
+import { createLogger } from "@scanii/logger";
 
 declare global {
   var process: {
@@ -8,6 +9,8 @@ declare global {
     };
   };
 }
+
+const logger = createLogger("upload-api");
 
 function bootstrap() {
   const app = new Hono();
@@ -21,7 +24,9 @@ function bootstrap() {
       port,
     },
     (info) => {
-      console.log(`Server is running on ${info.address}:${info.port}`);
+      logger.info(`Server is running on ${info.address}:${info.port}`);
     },
   );
 }
+
+bootstrap();

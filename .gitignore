@@ -45,3 +45,6 @@ minio-data
 
 # RabbitMQ
 rabbitmq-data
+
+# Logs
+*.log

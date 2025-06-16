@@ -1,0 +1,24 @@
+{
+  "name": "@scanii/logger",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc && tsc-alias"
+  },
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@scanii/prettier-config": "workspace:*",
+    "@scanii/typescript-config": "workspace:*",
+    "tsc-alias": "^1.8.16",
+    "typescript": "^5.7.3"
+  },
+  "dependencies": {
+    "winston": "^3.17.0"
+  }
+}
