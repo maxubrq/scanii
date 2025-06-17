@@ -1,4 +1,4 @@
-# 🔬 Scanii
+# 🔬 Skanii
 
 > **Tiny, open‑source malware‑scanning pipeline (mini‑VirusTotal) built with Node.js + TypeScript, RabbitMQ, Redis and Postgres.**
 
