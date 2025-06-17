@@ -1,4 +1,4 @@
-import { JsonSerializable } from '@scanii/domain';
+import { JsonSerializable } from '@skanii/domain';
 
 /**
  * Hashes of the file.
@@ -37,7 +37,7 @@ export type FileMetadata = {
  *
  * @example
  * ```ts
- * const file = new ScaniiFile('123');
+ * const file = new skaniiFile('123');
  * file.withHashes({ sha256: '123', sha512: '123', md5: '123' });
  * file.withMetadata({ name: 'test.txt', size: 100, mimeType: 'text/plain' });
  * file.withDownloadFrom('https://example.com/test.txt');
@@ -45,20 +45,20 @@ export type FileMetadata = {
  * console.log(file.toJSON());
  * ```
  */
-export class ScaniiFile implements JsonSerializable {
+export class skaniiFile implements JsonSerializable {
   private hashes?: FileHash;
   private metadata?: FileMetadata;
   private downloadFromUrl?: string;
   private path?: string;
   constructor(private readonly id: string) {
     if (!id) {
-      throw new Error('ScaniiFile: Id is required');
+      throw new Error('skaniiFile: Id is required');
     }
   }
 
   public withHashes(hashes: FileHash) {
     if (!hashes) {
-      throw new Error('ScaniiFile: Hashes are required');
+      throw new Error('skaniiFile: Hashes are required');
     }
 
     this.hashes = hashes;
@@ -67,7 +67,7 @@ export class ScaniiFile implements JsonSerializable {
 
   public withMetadata(metadata: FileMetadata) {
     if (!metadata) {
-      throw new Error('ScaniiFile: Metadata is required');
+      throw new Error('skaniiFile: Metadata is required');
     }
 
     this.metadata = metadata;
@@ -76,7 +76,7 @@ export class ScaniiFile implements JsonSerializable {
 
   public withDownloadFrom(downloadFrom: string) {
     if (!downloadFrom) {
-      throw new Error('ScaniiFile: Download from is required');
+      throw new Error('skaniiFile: Download from is required');
     }
 
     this.downloadFromUrl = downloadFrom;
@@ -85,7 +85,7 @@ export class ScaniiFile implements JsonSerializable {
 
   public withPath(path: string) {
     if (!path) {
-      throw new Error('ScaniiFile: Path is required');
+      throw new Error('skaniiFile: Path is required');
     }
 
     this.path = path;
@@ -103,7 +103,7 @@ export class ScaniiFile implements JsonSerializable {
   }
 
   public static fromJSON(json: any) {
-    return new ScaniiFile(json.id)
+    return new skaniiFile(json.id)
       .withHashes(json.hashes)
       .withMetadata(json.metadata)
       .withDownloadFrom(json.downloadFromUrl);

@@ -1,4 +1,4 @@
-import base from "@scanii/prettier-config/base.js";
+import base from "@skanii/prettier-config/base.js";
 
 export default {
   ...base,

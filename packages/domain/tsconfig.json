@@ -1,10 +1,10 @@
 {
-  "extends": "@scanii/typescript-config/base.json",
+  "extends": "@skanii/typescript-config/base.json",
   "compilerOptions": {
     "outDir": "./dist",
     "rootDir": "./src",
     "paths": {
-      "@scanii/domain": [
+      "@skanii/domain": [
         "./src/index.ts"
       ]
     }

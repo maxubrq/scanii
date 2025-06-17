@@ -28,7 +28,7 @@ for app in $apps; do
   cd apps/$app
   # Get version from package.json
   version=$(jq -r '.version' package.json)
-  result=$(docker build -t scanii/$app:$version -f Dockerfile .)
+  result=$(docker build -t skanii/$app:$version -f Dockerfile .)
   if [ $? -eq 0 ]; then
     echo -e "${COLOR_GREEN}Image built successfully${COLOR_RESET}"
     NUM_IMAGES=$((NUM_IMAGES + 1))

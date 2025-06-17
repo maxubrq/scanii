@@ -1,14 +1,14 @@
-# 🔬 Scanii
+# 🔬 skanii
 
 > **Tiny, open‑source malware‑scanning pipeline (mini‑VirusTotal) built with Node.js + TypeScript, RabbitMQ, Redis and Postgres.**
 
-[![CI](https://github.com/your‑handle/scanii/actions/workflows/ci.yml/badge.svg)](…)
-[![Docker Pulls](https://img.shields.io/docker/pulls/scanii/worker)](…)
-[![License](https://img.shields.io/github/license/your‑handle/scanii)](LICENSE)
+[![CI](https://github.com/your‑handle/skanii/actions/workflows/ci.yml/badge.svg)](…)
+[![Docker Pulls](https://img.shields.io/docker/pulls/skanii/worker)](…)
+[![License](https://img.shields.io/github/license/your‑handle/skanii)](LICENSE)
 
 ---
 
-## ✨ Why Scanii?
+## ✨ Why skanii?
 
 * **Practice‑ready OSS** – mono‑repo + `docker‑compose`, up in < 5 min.
 * **Async pipeline** – upload once, scan in the background, poll or subscribe.
@@ -46,8 +46,8 @@
 
 ```bash
 # 1. Clone & launch
-$ git clone https://github.com/your-handle/scanii.git
-$ cd scanii
+$ git clone https://github.com/your-handle/skanii.git
+$ cd skanii
 $ make dev        # or: docker compose up -d --build
 
 # 2. Upload a sample
@@ -71,7 +71,7 @@ Login to Grafana at `http://localhost:3000` (admin / admin) to view queue depth,
 | `REDIS_URL`    | `redis://redis:6379`   | Redis connection string             |
 | `RABBIT_URL`   | `amqp://rabbitmq:5672` | RabbitMQ host                       |
 | `S3_ENDPOINT`  | `http://minio:9000`    | MinIO/S3 endpoint                   |
-| `S3_BUCKET`    | `scanii-samples`       | Bucket for uploaded files           |
+| `S3_BUCKET`    | `skanii-samples`       | Bucket for uploaded files           |
 | `MAX_FILE_MB`  | `100`                  | Reject files larger than this value |
 
 All variables can be overridden via `.env` or the Compose override file.
@@ -98,7 +98,7 @@ See full Swagger/OpenAPI spec at `http://localhost:4000/docs` once the stack is 
 
 ## 🛣️ Roadmap
 
-* [ ] **CLI** (`npx scanii scan file.exe`)
+* [ ] **CLI** (`npx skanii scan file.exe`)
 * [ ] **Webhook callbacks** for async notification
 * [ ] **Cuckoo Sandbox plugin** (optional heavy mode)
 * [ ] Multi‑engine adapter (vendor cloud AV)
@@ -120,14 +120,14 @@ Good first issues are labelled **`good‑first‑issue`**.
 
 ## 🔒 Security & Responsible Disclosure
 
-Scanning malware is risky. Workers run **unprivileged** with seccomp, read‑only rootfs and limited CPU/IO. If you discover a security issue, please email ***[security@scanii.dev](mailto:security@scanii.dev)*** instead of opening a public issue.
+Scanning malware is risky. Workers run **unprivileged** with seccomp, read‑only rootfs and limited CPU/IO. If you discover a security issue, please email ***[security@skanii.dev](mailto:security@skanii.dev)*** instead of opening a public issue.
 
 ---
 
 ## 📜 License
 
-Scanii is released under the **MIT License** – see [`LICENSE`](LICENSE) for details.
+skanii is released under the **MIT License** – see [`LICENSE`](LICENSE) for details.
 
 ---
 
-> Built with ❤️ & ☕ by contributors around the world – star the repo if Scanii helps you learn!
+> Built with ❤️ & ☕ by contributors around the world – star the repo if skanii helps you learn!

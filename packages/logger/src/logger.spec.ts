@@ -33,7 +33,7 @@ vi.mock("winston", () => {
   };
 });
 
-const { ScaniiLogger, createLogger, colorize, getColorByLevel, levelPadding, ASCII_COLOR } = loggerModule;
+const { skaniiLogger, createLogger, colorize, getColorByLevel, levelPadding, ASCII_COLOR } = loggerModule;
 
 describe("Logger Utilities", () => {
   describe("colorize", () => {
@@ -63,8 +63,8 @@ describe("Logger Utilities", () => {
   });
 });
 
-describe("ScaniiLogger", () => {
-  let logger: typeof ScaniiLogger.prototype;
+describe("skaniiLogger", () => {
+  let logger: typeof skaniiLogger.prototype;
   const mockWinstonLogger = {
     info: vi.fn(),
     error: vi.fn(),
@@ -75,7 +75,7 @@ describe("ScaniiLogger", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     (winston.createLogger as any).mockReturnValue(mockWinstonLogger);
-    logger = new ScaniiLogger("test-logger");
+    logger = new skaniiLogger("test-logger");
   });
 
   afterEach(() => {

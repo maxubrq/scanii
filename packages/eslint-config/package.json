@@ -1,5 +1,5 @@
 {
-  "name": "@scanii/eslint-config",
+  "name": "@skanii/eslint-config",
   "version": "0.0.0",
   "type": "module",
   "private": true,
@@ -14,7 +14,7 @@
   "devDependencies": {
     "@eslint/js": "^9.28.0",
     "@next/eslint-plugin-next": "^15.3.0",
-    "@scanii/prettier-config": "workspace:*",
+    "@skanii/prettier-config": "workspace:*",
     "eslint": "^9.28.0",
     "eslint-config-prettier": "^10.1.1",
     "eslint-plugin-only-warn": "^1.1.0",

@@ -1,3 +1,3 @@
-import { config } from '@scanii/prettier-config';
+import { config } from '@skanii/prettier-config';
 
 export default config;

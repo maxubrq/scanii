@@ -1,5 +1,5 @@
 {
-  "name": "scanii",
+  "name": "skanii",
   "private": true,
   "scripts": {
     "build": "turbo run build",

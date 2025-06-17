@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   scan-worker:
-    image: scanii/scan-worker
+    image: skanii/scan-worker
     build:
       context: ../apps/scan-worker
       dockerfile: Dockerfile
@@ -17,7 +17,7 @@ services:
     depends_on:
       - rabbitmq
   result-api:
-    image: scanii/result-api
+    image: skanii/result-api
     build:
       context: ../apps/result-api
       dockerfile: Dockerfile
@@ -32,7 +32,7 @@ services:
     depends_on:
       - rabbitmq
   upload-api:
-    image: scanii/upload-api
+    image: skanii/upload-api
     build:
       context: ../apps/upload-api
       dockerfile: Dockerfile

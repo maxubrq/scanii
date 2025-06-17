@@ -1,6 +1,6 @@
 import { serve } from "@hono/node-server";
 import { Hono } from "hono";
-import { createLogger } from "@scanii/logger";
+import { createLogger } from "@skanii/logger";
 
 declare global {
   var process: {

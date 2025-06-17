@@ -1,5 +1,5 @@
 {
-  "name": "@scanii/domain",
+  "name": "@skanii/domain",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -22,8 +22,8 @@
     "typescript": "^5.8.3"
   },
   "devDependencies": {
-    "@scanii/prettier-config": "workspace:*",
-    "@scanii/typescript-config": "workspace:*",
+    "@skanii/prettier-config": "workspace:*",
+    "@skanii/typescript-config": "workspace:*",
     "prettier": "^3.5.3",
     "tsc-alias": "^1.8.16",
     "vitest": "^3.2.3"

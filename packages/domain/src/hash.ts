@@ -1,4 +1,4 @@
-import { FileHash } from '@scanii/domain';
+import { FileHash } from '@skanii/domain';
 
 /**
  * Hash algorithms supported by the API.

@@ -1,5 +1,5 @@
 {
-  "name": "@scanii/result-api",
+  "name": "@skanii/result-api",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
@@ -19,8 +19,8 @@
     "typescript": "^5.8.3"
   },
   "devDependencies": {
-    "@scanii/prettier-config": "workspace:*",
-    "@scanii/typescript-config": "workspace:*",
+    "@skanii/prettier-config": "workspace:*",
+    "@skanii/typescript-config": "workspace:*",
     "prettier": "^3.5.3",
     "vitest": "^3.2.3"
   }

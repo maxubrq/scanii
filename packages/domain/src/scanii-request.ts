@@ -1,4 +1,4 @@
-import { JsonSerializable, ScaniiFile } from '@scanii/domain';
+import { JsonSerializable, skaniiFile } from '@skanii/domain';
 
 /**
  * Represents a request to scan files.
@@ -8,22 +8,22 @@ import { JsonSerializable, ScaniiFile } from '@scanii/domain';
  *
  * @example
  * ```ts
- * const request = new ScaniiRequest('123');
- * request.withFiles([new ScaniiFile('123')]);
+ * const request = new skaniiRequest('123');
+ * request.withFiles([new skaniiFile('123')]);
  * console.log(request.toJSON());
  * ```
  */
-export class ScaniiRequest implements JsonSerializable {
-  private files: ScaniiFile[] = [];
+export class skaniiRequest implements JsonSerializable {
+  private files: skaniiFile[] = [];
   constructor(private readonly id: string) {
     if (!id) {
-      throw new Error('ScaniiRequest: Id is required');
+      throw new Error('skaniiRequest: Id is required');
     }
   }
 
-  public withFiles(files: ScaniiFile[]) {
+  public withFiles(files: skaniiFile[]) {
     if (!files) {
-      throw new Error('ScaniiRequest: Files are required');
+      throw new Error('skaniiRequest: Files are required');
     }
 
     this.files = files;
