@@ -1,4 +1,4 @@
-# 🔬 skanii
+# 🔬 Skanii
 
 > **Tiny, open‑source malware‑scanning pipeline (mini‑VirusTotal) built with Node.js + TypeScript, RabbitMQ, Redis and Postgres.**
 
@@ -8,7 +8,7 @@
 
 ---
 
-## ✨ Why skanii?
+## ✨ Why Skanii?
 
 * **Practice‑ready OSS** – mono‑repo + `docker‑compose`, up in < 5 min.
 * **Async pipeline** – upload once, scan in the background, poll or subscribe.
