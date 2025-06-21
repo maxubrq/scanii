@@ -14,26 +14,26 @@ import { JsonSerializable, skaniiFile } from '@skanii/domain';
  * ```
  */
 export class skaniiRequest implements JsonSerializable {
-  private files: skaniiFile[] = [];
-  constructor(private readonly id: string) {
-    if (!id) {
-      throw new Error('skaniiRequest: Id is required');
-    }
-  }
-
-  public withFiles(files: skaniiFile[]) {
-    if (!files) {
-      throw new Error('skaniiRequest: Files are required');
+    private files: skaniiFile[] = [];
+    constructor(private readonly id: string) {
+        if (!id) {
+            throw new Error('skaniiRequest: Id is required');
+        }
     }
 
-    this.files = files;
-    return this;
-  }
+    public withFiles(files: skaniiFile[]) {
+        if (!files) {
+            throw new Error('skaniiRequest: Files are required');
+        }
 
-  public toJSON() {
-    return {
-      id: this.id,
-      files: this.files.map((file) => file.toJSON()),
-    };
-  }
+        this.files = files;
+        return this;
+    }
+
+    public toJSON() {
+        return {
+            id: this.id,
+            files: this.files.map((file) => file.toJSON()),
+        };
+    }
 }

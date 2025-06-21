@@ -107,7 +107,7 @@ function customFormatForFile(name: string): winston.Logform.Format {
  * @param defaultLevel - The default level of the logger.
  * @returns The logger instance.
  */
-export class skaniiLogger {
+export class SkaniiLogger {
   private logger: winston.Logger;
 
   constructor(name: string, defaultLevel: string = "info") {
@@ -150,7 +150,7 @@ export class skaniiLogger {
   }
 }
 
-let logger: skaniiLogger | null = null;
+let logger: SkaniiLogger | null = null;
 
 /**
  * Create a logger instance. If the logger is not already created, it will be created with the given name and default level.
@@ -162,9 +162,9 @@ let logger: skaniiLogger | null = null;
 export function createLogger(
   name: string,
   defaultLevel: string = "info",
-): skaniiLogger {
+): SkaniiLogger {
   if (!logger) {
-    logger = new skaniiLogger(name, defaultLevel);
+    logger = new SkaniiLogger(name, defaultLevel);
   }
   return logger;
 }

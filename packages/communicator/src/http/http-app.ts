@@ -1,0 +1,133 @@
+import { Context, Hono } from 'hono';
+import { serve, ServerType } from '@hono/node-server';
+import { createLogger, SkaniiLogger } from '@skanii/logger';
+
+export type SkaniiHttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
+
+/**
+ * The HTTP route of the application.
+ */
+export type SkaniiHttpRoute = {
+    /**
+     * The HTTP method of the route.
+    //  */
+    method: SkaniiHttpMethod;
+    /**
+     * The path of the route.
+     */
+    path: string;
+    /**
+     * The handler of the route.
+     */
+    handler: (c: Context) => Promise<Response>;
+};
+
+/**
+ * The options of the HTTP application.
+ */
+export type SkaniiHttpAppOptions = {
+    /**
+     * The port of the application.
+     */
+    port: number;
+    /**
+     * The routes of the application. If not provided, the application will not have any routes.
+     * But you can add routes later using the `addRoute` method.
+     */
+    routes: SkaniiHttpRoute[];
+};
+
+/**
+ * The HTTP application.
+ */
+export class SkaniiHttpApp {
+    private readonly _app: Hono;
+    private readonly _logger: SkaniiLogger;
+    private readonly _routes: SkaniiHttpRoute[] = [];
+    private _server: ServerType | null = null;
+
+    constructor(
+        /**
+         * The name of the application.
+         */
+        private readonly name: string,
+        /**
+         * The options of the application.
+         */
+        private readonly options: SkaniiHttpAppOptions,
+    ) {
+        this._app = new Hono();
+        this._logger = createLogger(this.name);
+        this._routes = this.options.routes;
+        if (this._routes.length) {
+            this._routes.forEach((route) => {
+                this.addRoute(route.method, route.path, route.handler);
+            });
+        }
+    }
+
+    /**
+     * Add a route to the application.
+     * @param method - The HTTP method of the route.
+     * @param path - The path of the route.
+     * @param handler - The handler of the route.
+     */
+    public async addRoute(
+        method: SkaniiHttpMethod,
+        path: string,
+        handler: (c: Context) => Promise<Response>,
+    ): Promise<void> {
+        switch (method) {
+            case 'GET':
+                this._app.get(path, handler);
+                break;
+            case 'POST':
+                this._app.post(path, handler);
+                break;
+            case 'PUT':
+                this._app.put(path, handler);
+                break;
+            case 'DELETE':
+                this._app.delete(path, handler);
+                break;
+            default:
+                throw new Error(`[SkaniiHttpApp] Invalid method: ${method}`);
+        }
+    }
+
+    /**
+     * Start the application.
+     */
+    public async start(): Promise<void> {
+        const port = this.options.port;
+        if (this._server) {
+            this._logger.warn(
+                `[SkaniiHttpApp] Server is already running on ${this._server.address}:${port}`,
+            );
+            return;
+        }
+
+        this._logger.info(`[SkaniiHttpApp] Starting server on port ${port}`);
+        this._server = serve(
+            {
+                fetch: this._app.fetch,
+                port,
+            },
+            (info) => {
+                this._logger.info(`[SkaniiHttpApp] Server is running on ${info.address}:${port}`);
+            },
+        );
+    }
+
+    /**
+     * Stop the application.
+     */
+    public async stop(): Promise<void> {
+        if (!this._server) {
+            this._logger.warn(`[SkaniiHttpApp] Server is not running`);
+            return;
+        }
+
+        this._server.close();
+    }
+}

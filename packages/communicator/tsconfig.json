@@ -4,7 +4,7 @@
         "outDir": "./dist",
         "rootDir": "./src",
         "paths": {
-            "@skanii/domain": ["./src/index.ts"]
+            "@skanii/communicator": ["./src/index.ts"]
         }
     },
     "include": ["src/**/*"],

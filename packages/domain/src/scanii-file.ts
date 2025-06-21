@@ -8,9 +8,9 @@ import { JsonSerializable } from '@skanii/domain';
  * - md5: 128-bit hash
  */
 export type FileHash = {
-  sha256?: string;
-  sha512?: string;
-  md5?: string;
+    sha256?: string;
+    sha512?: string;
+    md5?: string;
 };
 
 /**
@@ -21,9 +21,9 @@ export type FileHash = {
  * - mimeType: The mime type of the file.
  */
 export type FileMetadata = {
-  name?: string;
-  size?: number;
-  mimeType?: string;
+    name?: string;
+    size?: number;
+    mimeType?: string;
 };
 
 /**
@@ -46,66 +46,66 @@ export type FileMetadata = {
  * ```
  */
 export class skaniiFile implements JsonSerializable {
-  private hashes?: FileHash;
-  private metadata?: FileMetadata;
-  private downloadFromUrl?: string;
-  private path?: string;
-  constructor(private readonly id: string) {
-    if (!id) {
-      throw new Error('skaniiFile: Id is required');
-    }
-  }
-
-  public withHashes(hashes: FileHash) {
-    if (!hashes) {
-      throw new Error('skaniiFile: Hashes are required');
+    private hashes?: FileHash;
+    private metadata?: FileMetadata;
+    private downloadFromUrl?: string;
+    private path?: string;
+    constructor(private readonly id: string) {
+        if (!id) {
+            throw new Error('skaniiFile: Id is required');
+        }
     }
 
-    this.hashes = hashes;
-    return this;
-  }
+    public withHashes(hashes: FileHash) {
+        if (!hashes) {
+            throw new Error('skaniiFile: Hashes are required');
+        }
 
-  public withMetadata(metadata: FileMetadata) {
-    if (!metadata) {
-      throw new Error('skaniiFile: Metadata is required');
+        this.hashes = hashes;
+        return this;
     }
 
-    this.metadata = metadata;
-    return this;
-  }
+    public withMetadata(metadata: FileMetadata) {
+        if (!metadata) {
+            throw new Error('skaniiFile: Metadata is required');
+        }
 
-  public withDownloadFrom(downloadFrom: string) {
-    if (!downloadFrom) {
-      throw new Error('skaniiFile: Download from is required');
+        this.metadata = metadata;
+        return this;
     }
 
-    this.downloadFromUrl = downloadFrom;
-    return this;
-  }
+    public withDownloadFrom(downloadFrom: string) {
+        if (!downloadFrom) {
+            throw new Error('skaniiFile: Download from is required');
+        }
 
-  public withPath(path: string) {
-    if (!path) {
-      throw new Error('skaniiFile: Path is required');
+        this.downloadFromUrl = downloadFrom;
+        return this;
     }
 
-    this.path = path;
-    return this;
-  }
+    public withPath(path: string) {
+        if (!path) {
+            throw new Error('skaniiFile: Path is required');
+        }
 
-  public toJSON() {
-    return {
-      id: this.id,
-      hashes: this.hashes,
-      metadata: this.metadata,
-      downloadFromUrl: this.downloadFromUrl,
-      path: this.path,
-    };
-  }
+        this.path = path;
+        return this;
+    }
 
-  public static fromJSON(json: any) {
-    return new skaniiFile(json.id)
-      .withHashes(json.hashes)
-      .withMetadata(json.metadata)
-      .withDownloadFrom(json.downloadFromUrl);
-  }
+    public toJSON() {
+        return {
+            id: this.id,
+            hashes: this.hashes,
+            metadata: this.metadata,
+            downloadFromUrl: this.downloadFromUrl,
+            path: this.path,
+        };
+    }
+
+    public static fromJSON(json: any) {
+        return new skaniiFile(json.id)
+            .withHashes(json.hashes)
+            .withMetadata(json.metadata)
+            .withDownloadFrom(json.downloadFromUrl);
+    }
 }

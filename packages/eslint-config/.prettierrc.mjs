@@ -1,5 +1,5 @@
-import base from "@skanii/prettier-config/base.js";
+import base from '@skanii/prettier-config/base';
 
 export default {
-  ...base,
+    ...base,
 };

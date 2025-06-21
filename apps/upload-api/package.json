@@ -1,35 +1,35 @@
 {
-  "name": "@skanii/upload-api",
-  "version": "1.0.0",
-  "description": "",
-  "main": "app.js",
-  "scripts": {
-    "dev": "tsx watch src/app.ts",
-    "build": "tsc && tsc-alias",
-    "format": "prettier --write .",
-    "test": "vitest",
-    "test:watch": "vitest --watch",
-    "test:coverage": "vitest run --coverage",
-    "build:ncc": "pnpm run build && ncc build dist/app.js -o distncc"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "@hono/node-server": "^1.14.4",
-    "@skanii/domain": "workspace:*",
-    "@skanii/logger": "workspace:*",
-    "hono": "^4.7.11",
-    "minio": "^8.0.5",
-    "short-uuid": "^5.2.0",
-    "typescript": "^5.8.3"
-  },
-  "devDependencies": {
-    "@skanii/prettier-config": "workspace:*",
-    "@skanii/typescript-config": "workspace:*",
-    "prettier": "^3.5.3",
-    "tsc-alias": "^1.8.16",
-    "tsx": "^4.20.3",
-    "vitest": "^3.2.3"
-  }
+    "name": "@skanii/upload-api",
+    "version": "1.0.0",
+    "description": "",
+    "main": "app.js",
+    "scripts": {
+        "dev": "tsx watch src/app.ts",
+        "build": "tsc && tsc-alias",
+        "format": "prettier --write .",
+        "test": "vitest",
+        "test:watch": "vitest --watch",
+        "test:coverage": "vitest run --coverage",
+        "build:ncc": "pnpm run build && ncc build dist/app.js -o distncc"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "@hono/node-server": "^1.14.4",
+        "@skanii/domain": "workspace:*",
+        "@skanii/logger": "workspace:*",
+        "hono": "^4.7.11",
+        "minio": "^8.0.5",
+        "short-uuid": "^5.2.0",
+        "typescript": "^5.8.3"
+    },
+    "devDependencies": {
+        "@skanii/prettier-config": "workspace:*",
+        "@skanii/typescript-config": "workspace:*",
+        "prettier": "^3.5.3",
+        "tsc-alias": "^1.8.16",
+        "tsx": "^4.20.3",
+        "vitest": "^3.2.3"
+    }
 }

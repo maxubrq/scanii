@@ -8,9 +8,9 @@ import { FileHash } from '@skanii/domain';
  * - MD5: 128-bit hash
  */
 export enum HashAlgorithm {
-  SHA256 = 'sha256',
-  SHA512 = 'sha512',
-  MD5 = 'md5',
+    SHA256 = 'sha256',
+    SHA512 = 'sha512',
+    MD5 = 'md5',
 }
 
 /**
@@ -27,8 +27,8 @@ export enum HashAlgorithm {
  * ```
  */
 export async function hashFileOne(file: File, algorithm: HashAlgorithm): Promise<string> {
-  const hash = await crypto.subtle.digest(algorithm, await file.arrayBuffer());
-  return hash.toString();
+    const hash = await crypto.subtle.digest(algorithm, await file.arrayBuffer());
+    return hash.toString();
 }
 
 /**
@@ -47,11 +47,11 @@ export async function hashFileOne(file: File, algorithm: HashAlgorithm): Promise
  * ```
  */
 export async function hashFile(file: File): Promise<FileHash> {
-  const algs = Object.values(HashAlgorithm);
-  const hashes = await Promise.all(algs.map((alg) => hashFileOne(file, alg)));
-  return {
-    [HashAlgorithm.SHA256]: hashes[0],
-    [HashAlgorithm.SHA512]: hashes[1],
-    [HashAlgorithm.MD5]: hashes[2],
-  };
+    const algs = Object.values(HashAlgorithm);
+    const hashes = await Promise.all(algs.map((alg) => hashFileOne(file, alg)));
+    return {
+        [HashAlgorithm.SHA256]: hashes[0],
+        [HashAlgorithm.SHA512]: hashes[1],
+        [HashAlgorithm.MD5]: hashes[2],
+    };
 }

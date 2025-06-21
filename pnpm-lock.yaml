@@ -99,6 +99,37 @@ importers:
         specifier: ^3.2.3
         version: 3.2.3(@types/node@24.0.3)(tsx@4.20.3)
 
+  packages/communicator:
+    dependencies:
+      '@hono/node-server':
+        specifier: ^1.14.4
+        version: 1.14.4(hono@4.7.11)
+      '@skanii/logger':
+        specifier: workspace:*
+        version: link:../logger
+      hono:
+        specifier: ^4.7.11
+        version: 4.7.11
+    devDependencies:
+      '@skanii/prettier-config':
+        specifier: workspace:*
+        version: link:../prettier-config
+      '@skanii/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+      prettier:
+        specifier: ^3.5.3
+        version: 3.5.3
+      tsc-alias:
+        specifier: ^1.8.16
+        version: 1.8.16
+      typescript:
+        specifier: ^5.7.3
+        version: 5.8.3
+      vitest:
+        specifier: ^3.2.3
+        version: 3.2.3(@types/node@24.0.3)(tsx@4.20.3)
+
   packages/domain:
     dependencies:
       short-uuid:

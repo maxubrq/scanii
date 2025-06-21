@@ -1,31 +1,31 @@
 {
-  "name": "@skanii/domain",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "dev": "tsc --watch",
-    "build": "tsc && tsc-alias",
-    "format": "prettier --write .",
-    "test": "vitest",
-    "test:watch": "vitest --watch",
-    "test:coverage": "vitest run --coverage"
-  },
-  "exports": {
-    ".": "./src/index.ts"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "short-uuid": "^5.2.0",
-    "typescript": "^5.8.3"
-  },
-  "devDependencies": {
-    "@skanii/prettier-config": "workspace:*",
-    "@skanii/typescript-config": "workspace:*",
-    "prettier": "^3.5.3",
-    "tsc-alias": "^1.8.16",
-    "vitest": "^3.2.3"
-  }
+    "name": "@skanii/domain",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "dev": "tsc --watch",
+        "build": "tsc && tsc-alias",
+        "format": "prettier --write .",
+        "test": "vitest",
+        "test:watch": "vitest --watch",
+        "test:coverage": "vitest run --coverage"
+    },
+    "exports": {
+        ".": "./src/index.ts"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "short-uuid": "^5.2.0",
+        "typescript": "^5.8.3"
+    },
+    "devDependencies": {
+        "@skanii/prettier-config": "workspace:*",
+        "@skanii/typescript-config": "workspace:*",
+        "prettier": "^3.5.3",
+        "tsc-alias": "^1.8.16",
+        "vitest": "^3.2.3"
+    }
 }
