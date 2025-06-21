@@ -1,3 +1,3 @@
-import { PrometheusExporter } from "@opentelemetry/exporter-prometheus";
+import { PrometheusExporter } from '@opentelemetry/exporter-prometheus';
 
 export class SkaniiPrometheusExporter extends PrometheusExporter {}

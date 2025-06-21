@@ -1,24 +1,30 @@
-import winston from "winston";
+import winston from 'winston';
 
+/**
+ * The log information.
+ */
 export type LogInfo = {
-  scanId?: string;
-  fileId?: string;
-  avName?: string;
-  avResultId?: string;
-  extra?: {
-    [key: string]: any;
-  };
+    scanId?: string;
+    fileId?: string;
+    avName?: string;
+    avResultId?: string;
+    extra?: {
+        [key: string]: any;
+    };
 };
 
+/**
+ * The ASCII colors.
+ */
 export enum ASCII_COLOR {
-  RED = "\x1b[31m",
-  GREEN = "\x1b[32m",
-  YELLOW = "\x1b[33m",
-  BLUE = "\x1b[34m",
-  MAGENTA = "\x1b[35m",
-  CYAN = "\x1b[36m",
-  WHITE = "\x1b[37m",
-  RESET = "\x1b[0m",
+    RED = '\x1b[31m',
+    GREEN = '\x1b[32m',
+    YELLOW = '\x1b[33m',
+    BLUE = '\x1b[34m',
+    MAGENTA = '\x1b[35m',
+    CYAN = '\x1b[36m',
+    WHITE = '\x1b[37m',
+    RESET = '\x1b[0m',
 }
 
 /**
@@ -29,7 +35,7 @@ export enum ASCII_COLOR {
  * @returns The colored text.
  */
 export function colorize(text: string, color: ASCII_COLOR) {
-  return `${color}${text}${ASCII_COLOR.RESET}`;
+    return `${color}${text}${ASCII_COLOR.RESET}`;
 }
 
 /**
@@ -39,24 +45,22 @@ export function colorize(text: string, color: ASCII_COLOR) {
  * @returns The color for the given level.
  */
 export function getColorByLevel(level: string) {
-  switch (level) {
-    case "error":
-      return ASCII_COLOR.RED;
-    case "warn":
-      return ASCII_COLOR.YELLOW;
-    case "info":
-      return ASCII_COLOR.GREEN;
-    case "debug":
-      return ASCII_COLOR.BLUE;
-    default:
-      return ASCII_COLOR.WHITE;
-  }
+    switch (level) {
+        case 'error':
+            return ASCII_COLOR.RED;
+        case 'warn':
+            return ASCII_COLOR.YELLOW;
+        case 'info':
+            return ASCII_COLOR.GREEN;
+        case 'debug':
+            return ASCII_COLOR.BLUE;
+        default:
+            return ASCII_COLOR.WHITE;
+    }
 }
 
 export function levelPadding(level: string, numPadding: number = 5): string {
-  return level.length > numPadding
-    ? level.slice(0, numPadding)
-    : level.padEnd(numPadding, " ");
+    return level.length > numPadding ? level.slice(0, numPadding) : level.padEnd(numPadding, ' ');
 }
 
 /**
@@ -69,35 +73,37 @@ export function levelPadding(level: string, numPadding: number = 5): string {
  * @param {string} info.label - The label of the log.
  */
 function customFormat(name: string): winston.Logform.Format {
-  return winston.format.printf(
-    ({ level, message, timestamp, label, ...meta }) => {
-      const levelWithPadding = levelPadding(level, 6);
-      const baseLine = `[${timestamp}] [${colorize(levelWithPadding.toUpperCase(), getColorByLevel(level))}] [${label || name}] ${message}`;
+    return winston.format.printf(({ level, message, timestamp, label, ...meta }) => {
+        const levelWithPadding = levelPadding(level, 6);
+        const baseLine = `[${timestamp}] [${colorize(levelWithPadding.toUpperCase(), getColorByLevel(level))}] [${label || name}] ${message}`;
 
-      // Extract custom fields like requestId, userId, etc. from `meta`
-      const extraFields = Object.entries(meta)
-        .map(([key, value]) => `${key}=${value}`)
-        .join(" ");
+        // Extract custom fields like requestId, userId, etc. from `meta`
+        const extraFields = Object.entries(meta)
+            .map(([key, value]) => `${key}=${value}`)
+            .join(' ');
 
-      return extraFields ? `${baseLine}\n  ${extraFields}` : baseLine;
-    },
-  );
+        return extraFields ? `${baseLine}\n  ${extraFields}` : baseLine;
+    });
 }
 
+/**
+ * Custom format for the logger.
+ *
+ * @param name - The name of the logger.
+ * @returns The custom format.
+ */
 function customFormatForFile(name: string): winston.Logform.Format {
-  return winston.format.printf(
-    ({ level, message, timestamp, label, ...meta }) => {
-      const levelWithPadding = levelPadding(level, 6);
-      const baseLine = `[${timestamp}] [${levelWithPadding.toUpperCase()}] [${label || name}] ${message}`;
+    return winston.format.printf(({ level, message, timestamp, label, ...meta }) => {
+        const levelWithPadding = levelPadding(level, 6);
+        const baseLine = `[${timestamp}] [${levelWithPadding.toUpperCase()}] [${label || name}] ${message}`;
 
-      // Extract custom fields like requestId, userId, etc. from `meta`
-      const extraFields = Object.entries(meta)
-        .map(([key, value]) => `${key}=${value}`)
-        .join(" ");
+        // Extract custom fields like requestId, userId, etc. from `meta`
+        const extraFields = Object.entries(meta)
+            .map(([key, value]) => `${key}=${value}`)
+            .join(' ');
 
-      return extraFields ? `${baseLine}\n  ${extraFields}` : baseLine;
-    },
-  );
+        return extraFields ? `${baseLine}\n  ${extraFields}` : baseLine;
+    });
 }
 
 /**
@@ -108,46 +114,46 @@ function customFormatForFile(name: string): winston.Logform.Format {
  * @returns The logger instance.
  */
 export class SkaniiLogger {
-  private logger: winston.Logger;
+    private logger: winston.Logger;
 
-  constructor(name: string, defaultLevel: string = "info") {
-    this.logger = winston.createLogger({
-      level: defaultLevel,
-      format: winston.format.combine(
-        winston.format.label({ label: name }),
-        winston.format.timestamp(),
-        customFormat(name),
-      ),
-      transports: [
-        new winston.transports.Console(),
-        new winston.transports.File({
-          filename: "error.log",
-          level: "error",
-          format: customFormatForFile(name),
-        }),
-        new winston.transports.File({
-          filename: "combined.log",
-          format: customFormatForFile(name),
-        }),
-      ],
-    });
-  }
+    constructor(name: string, defaultLevel: string = 'info') {
+        this.logger = winston.createLogger({
+            level: defaultLevel,
+            format: winston.format.combine(
+                winston.format.label({ label: name }),
+                winston.format.timestamp(),
+                customFormat(name),
+            ),
+            transports: [
+                new winston.transports.Console(),
+                new winston.transports.File({
+                    filename: 'error.log',
+                    level: 'error',
+                    format: customFormatForFile(name),
+                }),
+                new winston.transports.File({
+                    filename: 'combined.log',
+                    format: customFormatForFile(name),
+                }),
+            ],
+        });
+    }
 
-  public info(message: string, info?: LogInfo, ...args: any[]) {
-    this.logger.info(message, info, ...args);
-  }
+    public info(message: string, info?: LogInfo, ...args: any[]) {
+        this.logger.info(message, info, ...args);
+    }
 
-  public error(message: string, info?: LogInfo, ...args: any[]) {
-    this.logger.error(message, info, ...args);
-  }
+    public error(message: string, info?: LogInfo, ...args: any[]) {
+        this.logger.error(message, info, ...args);
+    }
 
-  public warn(message: string, info?: LogInfo, ...args: any[]) {
-    this.logger.warn(message, info, ...args);
-  }
+    public warn(message: string, info?: LogInfo, ...args: any[]) {
+        this.logger.warn(message, info, ...args);
+    }
 
-  public debug(message: string, info?: LogInfo, ...args: any[]) {
-    this.logger.debug(message, info, ...args);
-  }
+    public debug(message: string, info?: LogInfo, ...args: any[]) {
+        this.logger.debug(message, info, ...args);
+    }
 }
 
 let logger: SkaniiLogger | null = null;
@@ -159,12 +165,9 @@ let logger: SkaniiLogger | null = null;
  * @param defaultLevel - The default level of the logger.
  * @returns The logger instance.
  */
-export function createLogger(
-  name: string,
-  defaultLevel: string = "info",
-): SkaniiLogger {
-  if (!logger) {
-    logger = new SkaniiLogger(name, defaultLevel);
-  }
-  return logger;
+export function createLogger(name: string, defaultLevel: string = 'info'): SkaniiLogger {
+    if (!logger) {
+        logger = new SkaniiLogger(name, defaultLevel);
+    }
+    return logger;
 }

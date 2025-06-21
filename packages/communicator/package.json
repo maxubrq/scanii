@@ -21,7 +21,9 @@
         "prettier": "^3.5.3"
     },
     "dependencies": {
+        "@skanii/domain": "workspace:*",
         "@skanii/logger": "workspace:*",
+        "@skanii/otel": "workspace:*",
         "@hono/node-server": "^1.14.4",
         "hono": "^4.7.11"
     }

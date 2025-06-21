@@ -1,28 +1,30 @@
 {
-  "name": "@skanii/otel",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "build": "tsc && tsc-alias",
-    "test": "vitest",
-    "test:watch": "vitest watch",
-    "test:coverage": "vitest run --coverage"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "@skanii/prettier-config": "workspace:*",
-    "@skanii/typescript-config": "workspace:*",
-    "tsc-alias": "^1.8.16",
-    "typescript": "^5.7.3",
-    "vitest": "^3.2.3"
-  },
-  "dependencies": {
-    "@opentelemetry/api": "^1.9.0",
-    "@opentelemetry/exporter-prometheus": "^0.202.0",
-    "@opentelemetry/sdk-metrics": "^2.0.1",
-    "typescript": "^5.7.3"
-  }
+    "name": "@skanii/otel",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "build": "tsc && tsc-alias",
+        "test": "vitest",
+        "test:watch": "vitest watch",
+        "test:coverage": "vitest run --coverage",
+        "format": "prettier --write ."
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "@skanii/prettier-config": "workspace:*",
+        "@skanii/typescript-config": "workspace:*",
+        "tsc-alias": "^1.8.16",
+        "typescript": "^5.7.3",
+        "vitest": "^3.2.3",
+        "prettier": "^3.5.3"
+    },
+    "dependencies": {
+        "@opentelemetry/api": "^1.9.0",
+        "@opentelemetry/exporter-prometheus": "^0.202.0",
+        "@opentelemetry/sdk-metrics": "^2.0.1",
+        "typescript": "^5.7.3"
+    }
 }

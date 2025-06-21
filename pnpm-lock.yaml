@@ -104,9 +104,15 @@ importers:
       '@hono/node-server':
         specifier: ^1.14.4
         version: 1.14.4(hono@4.7.11)
+      '@skanii/domain':
+        specifier: workspace:*
+        version: link:../domain
       '@skanii/logger':
         specifier: workspace:*
         version: link:../logger
+      '@skanii/otel':
+        specifier: workspace:*
+        version: link:../otel
       hono:
         specifier: ^4.7.11
         version: 4.7.11
@@ -209,6 +215,9 @@ importers:
       '@skanii/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
+      prettier:
+        specifier: ^3.5.3
+        version: 3.5.3
       tsc-alias:
         specifier: ^1.8.16
         version: 1.8.16
@@ -240,6 +249,9 @@ importers:
       '@skanii/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
+      prettier:
+        specifier: ^3.5.3
+        version: 3.5.3
       tsc-alias:
         specifier: ^1.8.16
         version: 1.8.16

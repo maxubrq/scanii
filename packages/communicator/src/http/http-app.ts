@@ -1,7 +1,15 @@
-import { Context, Hono } from 'hono';
+import { Context, Hono, MiddlewareHandler } from 'hono';
 import { serve, ServerType } from '@hono/node-server';
 import { createLogger, SkaniiLogger } from '@skanii/logger';
+import { cors } from 'hono/cors';
+import { secureHeaders } from 'hono/secure-headers';
+import { SkaniiRequestIdMiddleware } from './http-middleware';
+import { compress } from 'hono/compress';
+import { csrf } from 'hono/csrf';
 
+/**
+ * The HTTP method of the route.
+ */
 export type SkaniiHttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
 /**
@@ -10,7 +18,7 @@ export type SkaniiHttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 export type SkaniiHttpRoute = {
     /**
      * The HTTP method of the route.
-    //  */
+     */
     method: SkaniiHttpMethod;
     /**
      * The path of the route.
@@ -35,6 +43,16 @@ export type SkaniiHttpAppOptions = {
      * But you can add routes later using the `addRoute` method.
      */
     routes: SkaniiHttpRoute[];
+    /**
+     * The middlewares of the application.
+     */
+    middlewares: MiddlewareHandler[];
+};
+
+export const DEFAULT_OPTIONS: SkaniiHttpAppOptions = {
+    port: Number(process.env.PORT) || 3000,
+    routes: [],
+    middlewares: [SkaniiRequestIdMiddleware(), cors(), secureHeaders(), csrf(), compress()],
 };
 
 /**
@@ -54,11 +72,20 @@ export class SkaniiHttpApp {
         /**
          * The options of the application.
          */
-        private readonly options: SkaniiHttpAppOptions,
+        private readonly options: SkaniiHttpAppOptions = DEFAULT_OPTIONS,
     ) {
         this._app = new Hono();
         this._logger = createLogger(this.name);
         this._routes = this.options.routes;
+
+        // Add middlewares
+        if (this.options.middlewares.length) {
+            this.options.middlewares.forEach((middleware) => {
+                this._app.use(middleware);
+            });
+        }
+
+        // Add routes
         if (this._routes.length) {
             this._routes.forEach((route) => {
                 this.addRoute(route.method, route.path, route.handler);
