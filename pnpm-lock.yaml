@@ -18,8 +18,8 @@ importers:
         specifier: ^2.5.4
         version: 2.5.4
       typescript:
-        specifier: 5.8.2
-        version: 5.8.2
+        specifier: 5.8.3
+        version: 5.8.3
       vitest:
         specifier: ^3.2.3
         version: 3.2.3(@types/node@24.0.3)(tsx@4.20.3)
