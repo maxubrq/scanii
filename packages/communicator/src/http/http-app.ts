@@ -60,22 +60,26 @@ export const DEFAULT_OPTIONS: SkaniiHttpAppOptions = {
  */
 export class SkaniiHttpApp {
     private readonly _app: Hono;
-    private readonly _logger: SkaniiLogger;
     private readonly _routes: SkaniiHttpRoute[] = [];
+    private readonly _name: string;
     private _server: ServerType | null = null;
 
     constructor(
         /**
          * The name of the application.
          */
-        private readonly name: string,
+        name: string,
         /**
          * The options of the application.
          */
         private readonly options: SkaniiHttpAppOptions = DEFAULT_OPTIONS,
+        /**
+         * The logger of the application.
+         */
+        private readonly logger: SkaniiLogger = createLogger(name),
     ) {
+        this._name = name;
         this._app = new Hono();
-        this._logger = createLogger(this.name);
         this._routes = this.options.routes;
 
         // Add middlewares
@@ -91,6 +95,14 @@ export class SkaniiHttpApp {
                 this.addRoute(route.method, route.path, route.handler);
             });
         }
+    }
+
+    /**
+     * Use a middleware.
+     * @param middleware - The middleware to use.
+     */
+    public use(...middleware: MiddlewareHandler[]): void {
+        this._app.use(...middleware);
     }
 
     /**
@@ -118,30 +130,38 @@ export class SkaniiHttpApp {
                 this._app.delete(path, handler);
                 break;
             default:
-                throw new Error(`[SkaniiHttpApp] Invalid method: ${method}`);
+                throw new Error(`[${this._name}] Invalid method: ${method}`);
         }
     }
 
     /**
      * Start the application.
+     *
+     * @param clients - The clients to use. If not provided, the default clients will be used.
      */
-    public async start(): Promise<void> {
+    public async start(
+        clients: {
+            serve: typeof serve;
+        } = {
+            serve,
+        },
+    ): Promise<void> {
         const port = this.options.port;
         if (this._server) {
-            this._logger.warn(
-                `[SkaniiHttpApp] Server is already running on ${this._server.address}:${port}`,
+            this.logger.warn(
+                `[${this._name}] Server is already running on ${this._server.address}:${port}`,
             );
             return;
         }
 
-        this._logger.info(`[SkaniiHttpApp] Starting server on port ${port}`);
-        this._server = serve(
+        this.logger.info(`[${this._name}] Starting server on port ${port}`);
+        this._server = clients.serve(
             {
                 fetch: this._app.fetch,
                 port,
             },
             (info) => {
-                this._logger.info(`[SkaniiHttpApp] Server is running on ${info.address}:${port}`);
+                this.logger.info(`[${this._name}] Server is running on ${info.address}:${port}`);
             },
         );
     }
@@ -151,7 +171,7 @@ export class SkaniiHttpApp {
      */
     public async stop(): Promise<void> {
         if (!this._server) {
-            this._logger.warn(`[SkaniiHttpApp] Server is not running`);
+            this.logger.warn(`[${this._name}] Server is not running`);
             return;
         }
 

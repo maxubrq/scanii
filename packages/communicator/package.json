@@ -7,7 +7,13 @@
         "build": "tsc",
         "dev": "tsc --watch",
         "lint": "eslint . --ext .ts,.tsx",
-        "format": "prettier --write ."
+        "format": "prettier --write .",
+        "test": "vitest",
+        "test:run": "vitest run",
+        "test:coverage": "vitest run --coverage"
+    },
+    "exports": {
+        ".": "./src/index.ts"
     },
     "keywords": [],
     "author": "",
@@ -15,16 +21,19 @@
     "devDependencies": {
         "@skanii/prettier-config": "workspace:*",
         "@skanii/typescript-config": "workspace:*",
+        "@types/amqplib": "^0.10.7",
+        "@vitest/coverage-v8": "3.2.4",
+        "prettier": "^3.5.3",
         "tsc-alias": "^1.8.16",
         "typescript": "^5.7.3",
-        "vitest": "^3.2.3",
-        "prettier": "^3.5.3"
+        "vitest": "^3.2.3"
     },
     "dependencies": {
+        "@hono/node-server": "^1.14.4",
         "@skanii/domain": "workspace:*",
         "@skanii/logger": "workspace:*",
         "@skanii/otel": "workspace:*",
-        "@hono/node-server": "^1.14.4",
+        "amqplib": "^0.10.8",
         "hono": "^4.7.11"
     }
 }
