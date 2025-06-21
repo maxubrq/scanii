@@ -2,7 +2,7 @@
 
 > **Tiny, open‑source malware‑scanning pipeline (mini‑VirusTotal) built with Node.js + TypeScript, RabbitMQ, Redis and Postgres.**
 
-[![CI](https://github.com/your‑handle/skanii/actions/workflows/ci.yml/badge.svg)](…)
+[![Tests](https://github.com/hungtran/scanii/actions/workflows/main.yaml/badge.svg)](https://github.com/hungtran/scanii/actions/workflows/main.yaml)
 [![Docker Pulls](https://img.shields.io/docker/pulls/skanii/worker)](…)
 [![License](https://img.shields.io/github/license/your‑handle/skanii)](LICENSE)
 
