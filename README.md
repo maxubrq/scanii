@@ -1,133 +1,131 @@
-# 🔬 Skanii
+# 🛡️ **Skanii**  v1.0.0 — tiny, wicked-fast malware-scanning pipeline
+*Mini-VirusTotal built with Node.js + TypeScript, RabbitMQ, **Redis-first**, and Postgres.*
 
-> **Tiny, open‑source malware‑scanning pipeline (mini‑VirusTotal) built with Node.js + TypeScript, RabbitMQ, Redis and Postgres.**
-
-[![Tests](https://github.com/hungtran/scanii/actions/workflows/main.yaml/badge.svg)](https://github.com/hungtran/scanii/actions/workflows/main.yaml)
-[![Docker Pulls](https://img.shields.io/docker/pulls/skanii/worker)](…)
-[![License](https://img.shields.io/github/license/your‑handle/skanii)](LICENSE)
-
----
-
-## ✨ Why Skanii?
-
-* **Practice‑ready OSS** – mono‑repo + `docker‑compose`, up in < 5 min.
-* **Async pipeline** – upload once, scan in the background, poll or subscribe.
-* **Lightweight engines** – ships with **ClamAV** & **YARA**; easy to add more.
-* **Cache‑first** – SHA‑256 verdicts kept 24 h in Redis to avoid duplicate scans.
-* **Observability by default** – Prometheus metrics & Grafana dashboards.
-* **MIT‑licensed** – fork, extend, embed, no strings attached.
+[![build](https://img.shields.io/github/actions/workflow/status/your-org/skanii/ci.yml?label=CI)](…) 
+[![license](https://img.shields.io/badge/license-Apache--2.0-blue)](LICENSE) 
+[![docker](https://img.shields.io/badge/docker-ready-green)](docker-compose.yml)
 
 ---
 
-## 🏗️ Architecture (MVP)
-
-```text
-┌──────────────┐   POST /upload   ┌──────────────────┐
-│  Upload API  │ ───────────────► │  MinIO  (S3)     │
-└─────┬────────┘                 └────────┬─────────┘
-      │  scan job (id, sha256)            │
-      ▼                                   ▼
-┌──────────────┐        RabbitMQ        ┌────────────────┐
-│ Result API & │◄────────────────────── │  Scan Worker   │
-│ Dashboard    │   status / events      │  pool (ClamAV) │
-└──────────────┘                         └────────────────┘
-       ▲
-       │   Redis (24 h verdict cache)
-       │
-       ▼
-  PostgreSQL (metadata, audit, billing)
-```
+## ✨ Why Skanii?
+* ⏱ **<2 s p95 latency** for 1 MB files on a laptop  
+* 🔒 Namespaced sandbox for each engine  
+* 📜 Append-only **event log** (Postgres) for audit & replay  
+* 🚀 CQRS-lite skeleton → any future dashboard/ML projection is just a subscriber  
+* 🪄 Road-mapped “Magic” features: ⌛ drag-drop instant verdict, GPT explanations, auto-scaling
 
 ---
 
-## 🚀 Quick Start
+## 📦  Features in v1.0.0
 
-> **Prerequisites:** Docker Desktop ≥ 24 or compatible Linux Docker Engine.
+| Layer | Capability | Engines |
+|-------|------------|---------|
+| Ingress | REST & CLI upload (≤ 100 MB) | — |
+| Core   | SHA-256 dedup · Redis hash as hot store · command→event flow | — |
+| Workers | **Typrr** (file-type) → **ClamAV** (AV) | Typrr · ClamAV |
+| Results | `GET /files/:sha256` JSON view | — |
+| Ops | Docker stack · Prometheus metrics · Grafana dashboard | — |
+| Security | API-key auth · token-bucket rate-limit (Redis) | — |
+
+Everything else (YARA, Web UI, ML clustering, auto-scale) lives in `ROADMAP.md`.
+
+---
+
+## 🚀 Quick-start (10 min)
 
 ```bash
-# 1. Clone & launch
-$ git clone https://github.com/your-handle/skanii.git
-$ cd skanii
-$ make dev        # or: docker compose up -d --build
+git clone https://github.com/your-org/skanii.git
+cd skanii
+docker compose up -d        # web, workers, redis, postgres, rabbitmq, grafana
+# wait ~3 min for ClamAV sigs
+curl -F "file=@/path/eicar.com" -H "X-API-Key: YOUR_KEY" http://localhost:3000/upload
+# → {"sha256":"…","status":"queued"}
+curl http://localhost:3000/files/SHA256
+# → {"sha256":"…","mime":"application/x-dosexec","clamVerdict":"Win.Test.EICAR_HDB-1","status":"finished"}
+````
 
-# 2. Upload a sample
-$ curl -F "file=@tests/eicar.com" http://localhost:4000/upload
-{"scan_id":"e2d1...","status":"queued"}
+Power-users: `pnpm i && pnpm dev` runs gateway only; workers start with `pnpm worker`.
 
-# 3. Poll result
-$ curl http://localhost:4002/scan/e2d1...
-{"verdict":"malicious","engines":{"ClamAV":"EICAR-Test-Signature"}}
+---
+
+## 🗺️  High-level architecture
+
+```mermaid
+graph TD
+  subgraph Command Side
+    A[REST /upload] -->|UploadFileCmd| B[CmdHandler]
+    B -->|HSET file:{sha}=queued| R[(Redis)]
+    B -->|INSERT event row| P[(Postgres events)]
+    B -->|Publish msg| Q(RabbitMQ.scan)
+  end
+  subgraph Workers
+    Q --> T(Typrr)
+    T -->|Redis update + event| R
+    Q --> C(ClamAV)
+    C -->|Redis update + event| R
+  end
+  D[GET /files/:sha] -->|QueryHandler| R
 ```
 
-Login to Grafana at `http://localhost:3000` (admin / admin) to view queue depth, API latency, cache hit‑rate.
+*Reads are **always** from Redis; every state change is persisted to the immutable `events` table.*
 
 ---
 
-## ⚙️ Configuration
+## 🏗️  Project structure
 
-| ENV            | Default                | Description                         |
-| -------------- | ---------------------- | ----------------------------------- |
-| `SCAN_WORKERS` | `2`                    | # of parallel scan containers       |
-| `REDIS_URL`    | `redis://redis:6379`   | Redis connection string             |
-| `RABBIT_URL`   | `amqp://rabbitmq:5672` | RabbitMQ host                       |
-| `S3_ENDPOINT`  | `http://minio:9000`    | MinIO/S3 endpoint                   |
-| `S3_BUCKET`    | `skanii-samples`       | Bucket for uploaded files           |
-| `MAX_FILE_MB`  | `100`                  | Reject files larger than this value |
-
-All variables can be overridden via `.env` or the Compose override file.
-
----
-
-## 📚 API (v1)
-
-### `POST /upload`
-
-Upload a file (multipart‑form). Returns `scan_id`.
-
-### `GET /scan/{scan_id}`
-
-Fetch scan result JSON. Returns `202 Accepted` if still in queue, or `200` with verdict when finished.
-
-### `WS /ws/scan/{scan_id}` *(optional)*
-
-WebSocket endpoint that pushes `scan.progress` & `scan.done` events.
-
-See full Swagger/OpenAPI spec at `http://localhost:4000/docs` once the stack is running.
+```
+/apps
+  api/           NestJS gateway (REST)
+/packages
+  core/
+    commands/    CQRS command handlers
+    events/      Event definitions & publisher
+  engines/
+    typrr/       Wrapper & Dockerfile
+    clamav/      Wrapper & Dockerfile
+docker/          Service images & configs
+docs/            Architecture diagrams, ADRs
+```
 
 ---
 
-## 🛣️ Roadmap
+## 🧪  CI / CD
 
-* [ ] **CLI** (`npx skanii scan file.exe`)
-* [ ] **Webhook callbacks** for async notification
-* [ ] **Cuckoo Sandbox plugin** (optional heavy mode)
-* [ ] Multi‑engine adapter (vendor cloud AV)
-* [ ] Edge upload proxy + rate‑limit per IP
-
-Track progress in [`docs/ROADMAP.md`](docs/ROADMAP.md).
+* **GitHub Actions**: lint → unit tests → Docker build → Clam sig fetch
+* **Nightly** job bumps ClamAV signatures via PR
+* Build ≤ 5 min, blocks merge on red
+* SBOM & image signing slated for v1.1
 
 ---
 
-## 🤝 Contributing
+## 🛣️  Roadmap (abridged)
 
-1. Fork → Branch → PR. Follow Conventional Commits.
-2. `npm run test` must pass (unit + integration).
-3. Docs live in `docs/` (Markdown); kept in sync with code.
+| Version | Focus                            | Candidate “Magic”                  |
+| ------- | -------------------------------- | ---------------------------------- |
+| v1.1    | YARA engine · Web UI             | Drag-drop ⇢ instant verdict agent  |
+| v1.2    | Helm chart · HPA auto-scale      | GPT-powered plain-English verdicts |
+| v1.3    | Global SHA cache · ML clustering | Cross-file campaign grouping       |
 
-Good first issues are labelled **`good‑first‑issue`**.
-
----
-
-## 🔒 Security & Responsible Disclosure
-
-Scanning malware is risky. Workers run **unprivileged** with seccomp, read‑only rootfs and limited CPU/IO. If you discover a security issue, please email ***[security@skanii.dev](mailto:security@skanii.dev)*** instead of opening a public issue.
+See [`ROADMAP.md`](ROADMAP.md) for full backlog.
 
 ---
 
-## 📜 License
+## 🤝  Contributing
 
-skanii is released under the **MIT License** – see [`LICENSE`](LICENSE) for details.
+1. Fork → feature branch (`feat/xyz`)
+2. `pnpm lint && pnpm test` must pass
+3. Submit PR; maintainers review event-schema compatibility
+4. Once merged, CI publishes edge Docker images.
+
+By contributing you agree to the [Contributor License Agreement](CLA.md).
 
 ---
 
-> Built with ❤️ & ☕ by contributors around the world – star the repo if skanii helps you learn!
+## 📜  License
+
+Licensed under the **Apache License, Version 2.0**.
+ClamAV runs in its own GPLv2 container; it communicates via stdout/exit-code only, keeping Skanii’s codebase Apache-2.0-clean.
+
+---
+
+> **Fast, auditable, hackable.** Clone, spin up, and start scanning—Skanii does the rest.
