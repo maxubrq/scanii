@@ -54,7 +54,7 @@ flowchart TD
   %% ---------- Command side ----------
   subgraph Command_Side
     A["REST /upload"] -->|UploadFileCmd| B[CmdHandler]
-    B -->|HSET file:{sha}=queued| R["Redis"]
+    B -->|HSET file:sha=queued| R["Redis"]
     B -->|INSERT event row| P["Postgres events"]
     B -->|Publish msg| Q["RabbitMQ scan queue"]
   end
